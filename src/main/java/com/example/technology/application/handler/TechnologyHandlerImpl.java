@@ -20,17 +20,31 @@ import java.util.Map;
 public class TechnologyHandlerImpl {
     private final TechnologyMapper technologyMapper;
     private final TechnologyServicePort technologyServicePort;
-    public Mono<ServerResponse> saveTechnology( ServerRequest request) {
+
+    public Mono<ServerResponse> saveTechnology(ServerRequest request) {
         return request.bodyToMono(TechnologyDTO.class)
-                .map(dto->{
+                .map(dto -> {
                     dto.setName(dto.getName().trim());
                     dto.setDescription(dto.getDescription().trim());
                     return dto;
                 })
                 .flatMap(technologyDto -> technologyServicePort.save(technologyMapper.toModel(technologyDto)).map(technologyMapper::toDTO))
                 .flatMap(savedTechnology -> {
-                    Map<String,String> response = Map.of("message", SuccessMessages.TECHNOLOGY_CREATED.getMessage());
-                  return  ServerResponse.status(HttpStatus.CREATED).bodyValue(response);
+                    Map<String, String> response = Map.of("message", SuccessMessages.TECHNOLOGY_CREATED.getMessage());
+                    return ServerResponse.status(HttpStatus.CREATED).bodyValue(response);
                 });
+    }
+
+    ;
+
+    public Mono<ServerResponse> getAllTechnologies(ServerRequest request) {
+        int page = request.queryParam("page").map(Integer::parseInt).orElse(1);
+        int size = request.queryParam("size").map(Integer::parseInt).orElse(10);
+        String sort = request.queryParam("sort").orElse(null);
+        return technologyServicePort.findAllBy(page, size, sort)
+                .doOnError(error -> log.error(error.getMessage()))
+                .map(technologyMapper::toDTO)
+                .collectList()
+                .flatMap(technologies -> ServerResponse.ok().bodyValue(technologies));
     }
 }
