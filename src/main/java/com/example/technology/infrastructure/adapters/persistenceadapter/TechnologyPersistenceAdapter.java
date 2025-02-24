@@ -5,7 +5,6 @@ import com.example.technology.domain.spi.TechnologyPersistencePort;
 import com.example.technology.infrastructure.adapters.persistenceadapter.mapper.TechnologyEntityMapper;
 import com.example.technology.infrastructure.adapters.persistenceadapter.repository.TechnologyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

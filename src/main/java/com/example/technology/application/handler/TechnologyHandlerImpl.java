@@ -35,8 +35,6 @@ public class TechnologyHandlerImpl {
                 });
     }
 
-    ;
-
     public Mono<ServerResponse> getAllTechnologies(ServerRequest request) {
         int page = request.queryParam("page").map(Integer::parseInt).orElse(1);
         int size = request.queryParam("size").map(Integer::parseInt).orElse(10);

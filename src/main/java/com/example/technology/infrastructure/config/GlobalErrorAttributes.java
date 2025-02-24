@@ -9,12 +9,13 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 @Component
 public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
     @Override
     public Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions options) {
-        Map<String, Object> errorAttributes = new LinkedHashMap<String, Object>();
+        Map<String, Object> errorAttributes = new LinkedHashMap<>();
         ErrorMessages errorMessage = ErrorMessages.fromException(getError(request));
         errorAttributes.put("status", errorMessage.getCode());
         errorAttributes.put("message", errorMessage.getMessage());

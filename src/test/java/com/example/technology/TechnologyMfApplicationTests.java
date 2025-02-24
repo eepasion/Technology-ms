@@ -7,17 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest(classes = TechnologyMfApplication.class)
 class TechnologyMfApplicationTests {
 
-	@MockBean
-	private TechnologyPersistencePort technologyPersistencePort;
+    @MockBean
+    private TechnologyPersistencePort technologyPersistencePort;
 
-	@Autowired
-	private TechnologyUseCase technologyUseCase;
+    @Autowired
+    private TechnologyUseCase technologyUseCase;
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+        assertNotNull(technologyUseCase);
+    }
 
 }

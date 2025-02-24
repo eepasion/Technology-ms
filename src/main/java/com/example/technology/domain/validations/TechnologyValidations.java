@@ -1,4 +1,4 @@
-package com.example.technology.domain.Validations;
+package com.example.technology.domain.validations;
 
 import com.example.technology.domain.enums.ErrorMessages;
 import com.example.technology.domain.exceptions.BusinessException;
@@ -6,15 +6,26 @@ import com.example.technology.domain.model.Technology;
 
 public class TechnologyValidations {
 
+    private TechnologyValidations() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void validateTechnology(Technology technology) {
         validateName(technology.name());
         validateDescription(technology.description());
     }
 
-    public static void validateTechnologyParameters(String sort){
-        if(!"ASC".equalsIgnoreCase(sort) && !"DESC".equalsIgnoreCase(sort) && sort != null){
+    public static void validateTechnologyParameters(int page, int size, String sort) {
+        if (!"ASC".equalsIgnoreCase(sort) && !"DESC".equalsIgnoreCase(sort) && sort != null) {
             throw new BusinessException(ErrorMessages.TECHNOLOGY_SORT_FORMAT);
-        }};
+        }
+        if (size <= 0) {
+            throw new BusinessException(ErrorMessages.TECHNOLOGY_PARAM_SIZE_LESS_ZERO);
+        }
+        if (page <= 0) {
+            throw new BusinessException(ErrorMessages.TECHNOLOGY_PARAM_PAGE_LESS_ZERO);
+        }
+    }
 
     private static void validateName(String name) {
         if (name.isEmpty()) {

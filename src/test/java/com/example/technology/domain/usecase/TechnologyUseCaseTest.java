@@ -47,13 +47,13 @@ class TechnologyUseCaseTest {
 
     @Test
     void listTechnologiesBeSuccessful() {
-        when(technologyPersistencePort.findAllBy(0, 10, "asc")).thenReturn(Flux.empty());
+        when(technologyPersistencePort.findAllBy(1, 10, "asc")).thenReturn(Flux.empty());
 
-        StepVerifier.create(technologyUseCase.findAllBy(0, 10, "asc"))
+        StepVerifier.create(technologyUseCase.findAllBy(1, 10, "asc"))
                 .expectNextCount(0)
                 .verifyComplete();
 
-        verify(technologyPersistencePort, times(1)).findAllBy(0, 10, "asc");
+        verify(technologyPersistencePort, times(1)).findAllBy(1, 10, "asc");
 
     }
 }
