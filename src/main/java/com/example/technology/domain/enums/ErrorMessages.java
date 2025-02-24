@@ -11,7 +11,8 @@ public enum ErrorMessages {
     TECHNOLOGY_NEEDS_DESCRIPTION(400,"La tecnologia debe tener una descripcion."),
     TECHNOLOGY_NEEDS_NAME(400,"La tecnologia debe tener un nombre."),
     TECHNOLOGY_NAME_SIZE(400,"El nombre de la tecnologia debe tener un maximo de 50 caracteres."),
-    TECHNOLOGY_DESCRIPTION_SIZE(400,"La descripcion de la tecnologia debe tener un maximo de 90 caracteres.");
+    TECHNOLOGY_DESCRIPTION_SIZE(400,"La descripcion de la tecnologia debe tener un maximo de 90 caracteres."),
+    TECHNOLOGY_SORT_FORMAT(400,"El parametro sort debe ser 'asc' o 'desc'.");
 
     private final Number code;
     private final String message;
