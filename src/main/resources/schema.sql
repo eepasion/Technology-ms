@@ -1,8 +1,6 @@
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS technologies (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255),
-    email VARCHAR(255)
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    descripcion VARCHAR(90) NOT NULL
 );
-
-
 
