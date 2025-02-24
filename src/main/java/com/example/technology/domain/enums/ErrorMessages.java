@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum ErrorMessages {
     INTERNAL_ERROR(500, "Hubo un error, por favor intente nuevamente mas tarde."),
+    TECHNOLOGY_NOT_FOUND(404, "La tecnologia no se encuentra registrada."),
     TECHNOLOGY_ALREADY_EXISTS(400, "La tecnologia ya se encuentra registrada."),
     TECHNOLOGY_NEEDS_DESCRIPTION(400, "La tecnologia debe tener una descripcion."),
     TECHNOLOGY_NEEDS_NAME(400, "La tecnologia debe tener un nombre."),

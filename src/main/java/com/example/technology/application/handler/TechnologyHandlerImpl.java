@@ -1,5 +1,6 @@
 package com.example.technology.application.handler;
 
+import com.example.technology.application.dto.TechnologyResponseDTO;
 import com.example.technology.domain.api.TechnologyServicePort;
 import com.example.technology.domain.enums.SuccessMessages;
 import com.example.technology.application.dto.TechnologyDTO;
@@ -10,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -44,5 +47,10 @@ public class TechnologyHandlerImpl {
                 .map(technologyMapper::toDTO)
                 .collectList()
                 .flatMap(technologies -> ServerResponse.ok().bodyValue(technologies));
+    }
+
+    public Flux<TechnologyResponseDTO> getTechnologiesById(List<Long> ids) {
+        return technologyServicePort.findAllById(ids)
+                .map(technologyMapper::toResponseDTO);
     }
 }

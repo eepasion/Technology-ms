@@ -1,5 +1,6 @@
 package com.example.technology.infrastructure.adapters.persistenceadapter;
 
+import com.example.technology.domain.exceptions.BusinessException;
 import com.example.technology.domain.model.Technology;
 import com.example.technology.domain.spi.TechnologyPersistencePort;
 import com.example.technology.infrastructure.adapters.persistenceadapter.mapper.TechnologyEntityMapper;
@@ -8,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
+import static com.example.technology.domain.enums.ErrorMessages.TECHNOLOGY_ALREADY_EXISTS;
+
 @RequiredArgsConstructor
 public class TechnologyPersistenceAdapter implements TechnologyPersistencePort {
     private final TechnologyEntityMapper technologyEntityMapper;
@@ -15,7 +20,8 @@ public class TechnologyPersistenceAdapter implements TechnologyPersistencePort {
 
     @Override
     public Mono<Technology> save(Technology technology) {
-        return technologyRepository.save(technologyEntityMapper.toEntity(technology)).map(technologyEntityMapper::toModel);
+        return technologyRepository.save(technologyEntityMapper.toEntity(technology)).map(technologyEntityMapper::toModel)
+                .switchIfEmpty(Mono.error(new BusinessException(TECHNOLOGY_ALREADY_EXISTS)));
     }
 
     @Override
@@ -32,6 +38,11 @@ public class TechnologyPersistenceAdapter implements TechnologyPersistencePort {
             return technologyRepository.findAllPagedAsc(size, offset).map(technologyEntityMapper::toModel);
         }
         return technologyRepository.findAllPaged(size, offset).map(technologyEntityMapper::toModel);
+    }
+
+    @Override
+    public Flux<Technology> findAllById(List<Long> ids) {
+        return technologyRepository.findAllById(ids).map(technologyEntityMapper::toModel);
     }
 
 }

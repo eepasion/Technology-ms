@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 import static com.example.technology.domain.validations.TechnologyValidations.validateTechnology;
 import static com.example.technology.domain.validations.TechnologyValidations.validateTechnologyParameters;
 
@@ -29,5 +31,10 @@ public class TechnologyUseCase implements TechnologyServicePort {
     public Flux<Technology> findAllBy(int page, int size, String sort) {
         validateTechnologyParameters(page, size, sort);
         return technologyPersistencePort.findAllBy(page, size, sort);
+    }
+
+    @Override
+    public Flux<Technology> findAllById(List<Long> ids) {
+        return technologyPersistencePort.findAllById(ids);
     }
 }
