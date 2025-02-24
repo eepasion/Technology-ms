@@ -11,6 +11,11 @@ public class TechnologyValidations {
         validateDescription(technology.description());
     }
 
+    public static void validateTechnologyParameters(String sort){
+        if(!"ASC".equalsIgnoreCase(sort) && !"DESC".equalsIgnoreCase(sort) && sort != null){
+            throw new BusinessException(ErrorMessages.TECHNOLOGY_SORT_FORMAT);
+        }};
+
     private static void validateName(String name) {
         if (name.isEmpty()) {
             throw new BusinessException(ErrorMessages.TECHNOLOGY_NEEDS_NAME);
