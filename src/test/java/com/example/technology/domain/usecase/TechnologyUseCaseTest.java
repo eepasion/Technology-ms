@@ -8,11 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class TechnologyUseCaseTest {
 
@@ -41,5 +44,16 @@ class TechnologyUseCaseTest {
         verify(technologyPersistencePort, times(1)).existByName(technology.name());
         verify(technologyPersistencePort, times(1)).save(technology);
     }
-  
+
+    @Test
+    void listTechnologiesBeSuccessful() {
+        when(technologyPersistencePort.findAllBy(0, 10, "asc")).thenReturn(Flux.empty());
+
+        StepVerifier.create(technologyUseCase.findAllBy(0, 10, "asc"))
+                .expectNextCount(0)
+                .verifyComplete();
+
+        verify(technologyPersistencePort, times(1)).findAllBy(0, 10, "asc");
+
+    }
 }

@@ -11,9 +11,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import static org.mockito.ArgumentMatchers.any;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -32,6 +35,7 @@ class TechnologyHandlerImplTest {
     void setUp() {
         webTestClient = WebTestClient.bindToRouterFunction(
                 route(POST("/technology"), technologyHandler::saveTechnology)
+                        .andRoute(GET("/technology"), technologyHandler::getAllTechnologies)
         ).build();
     }
 
@@ -48,6 +52,20 @@ class TechnologyHandlerImplTest {
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("$.message").isEqualTo("Tecnologia creada con exito.");
+    }
+
+    @Test
+    void testListTechnologiesSuccessful() {
+        TechnologyDTO technologyDTO = new TechnologyDTO("Java", "Programming Language");
+        Technology technology = new Technology(1L, "Java", "Programming Language");
+        when(technologyServicePort.findAllBy(anyInt(), anyInt(), anyString())).thenReturn(Flux.just(technology));
+        when(technologyMapper.toDTO(any(Technology.class))).thenReturn(technologyDTO);
+        webTestClient.get().uri(uriBuilder -> uriBuilder.path("/technology")
+                        .queryParam("page", "1")
+                        .queryParam("size", "10")
+                        .queryParam("sort", "DESC")
+                        .build()).exchange()
+                .expectStatus().isOk();
     }
 
 }

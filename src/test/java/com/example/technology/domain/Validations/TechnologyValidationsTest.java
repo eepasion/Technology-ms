@@ -53,4 +53,29 @@ class TechnologyValidationsTest {
         assertThatCode(() -> TechnologyValidations.validateTechnology(technology))
                 .doesNotThrowAnyException();
     }
+
+    @Test
+    void shouldThrowExceptionWhenSortIsInvalid() {
+        assertThatThrownBy(() -> TechnologyValidations.validateTechnologyParameters("invalid-sort"))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage(ErrorMessages.TECHNOLOGY_SORT_FORMAT.getMessage());
+    }
+
+    @Test
+    void shouldPassValidationWithASC() {
+        assertThatCode(() -> TechnologyValidations.validateTechnologyParameters("asc"))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void shouldPassValidationWithDESC() {
+        assertThatCode(() -> TechnologyValidations.validateTechnologyParameters("desc"))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void shouldPassValidationWithNull() {
+        assertThatCode(() -> TechnologyValidations.validateTechnologyParameters(null))
+                .doesNotThrowAnyException();
+    }
 }

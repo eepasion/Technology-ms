@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -64,5 +65,51 @@ class TechnologyPersistenceAdapterTest {
                 .expectNext(false)
                 .verifyComplete();
         verify(technologyRepository, times(1)).findByName(any(String.class));
+    }
+
+    @Test
+    void listTechnologiesBeSuccessful() {
+        when(technologyRepository.findAllPaged(10, 0)).thenReturn(Flux.empty());
+
+        StepVerifier.create(technologyPersistenceAdapter.findAllBy(1, 10, "name"))
+                .expectNextCount(0)
+                .verifyComplete();
+        verify(technologyRepository, times(1)).findAllPaged(10, 0);
+    }
+
+    @Test
+    void listTechnologiesAscBeSuccessful() {
+        when(technologyRepository.findAllPagedAsc(anyInt(), anyInt())).thenReturn(Flux.empty());
+
+        StepVerifier.create(technologyPersistenceAdapter.findAllBy(1, 10, "asc"))
+                .expectNextCount(0)
+                .verifyComplete();
+        verify(technologyRepository, times(1)).findAllPagedAsc(10, 0);
+        verify(technologyRepository, never()).findAllPagedDesc(10, 0);
+        verify(technologyRepository, never()).findAllPaged(10, 0);
+    }
+
+    @Test
+    void listTechnologiesDescBeSuccessful() {
+        when(technologyRepository.findAllPagedDesc(anyInt(), anyInt())).thenReturn(Flux.empty());
+
+        StepVerifier.create(technologyPersistenceAdapter.findAllBy(1, 10, "desc"))
+                .expectNextCount(0)
+                .verifyComplete();
+        verify(technologyRepository, never()).findAllPagedAsc(10, 0);
+        verify(technologyRepository, times(1)).findAllPagedDesc(10, 0);
+        verify(technologyRepository, never()).findAllPaged(10, 0);
+    }
+
+    @Test
+    void listTechnologiesOrderNullBeSuccessful() {
+        when(technologyRepository.findAllPaged(anyInt(), anyInt())).thenReturn(Flux.empty());
+
+        StepVerifier.create(technologyPersistenceAdapter.findAllBy(1, 10, null))
+                .expectNextCount(0)
+                .verifyComplete();
+        verify(technologyRepository, times(1)).findAllPaged(10, 0);
+        verify(technologyRepository, never()).findAllPagedAsc(10, 0);
+        verify(technologyRepository, never()).findAllPagedDesc(10, 0);
     }
 }
