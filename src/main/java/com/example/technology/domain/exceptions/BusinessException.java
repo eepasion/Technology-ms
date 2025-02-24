@@ -1,14 +1,19 @@
 package com.example.technology.domain.exceptions;
 
-import com.example.technology.domain.enums.TechnicalMessage;
+import com.example.technology.domain.enums.ErrorMessages;
 import lombok.Getter;
 
 @Getter
-public class BusinessException extends ProcessorException {
+public class BusinessException extends RuntimeException {
+    private final ErrorMessages errorMessage;
 
-    public BusinessException(TechnicalMessage technicalMessage) {
-        super(technicalMessage.getMessage(), technicalMessage);
+    public BusinessException(Throwable cause, ErrorMessages message) {
+        super(cause);
+        errorMessage = message;
     }
 
-
+    public BusinessException(ErrorMessages errorMessage) {
+        super(errorMessage.getMessage());
+        this.errorMessage = errorMessage;
+    }
 }
