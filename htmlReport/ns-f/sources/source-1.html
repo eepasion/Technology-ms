@@ -1,0 +1,140 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > TechnologyRouterConfig</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.technology.infrastructure.entrypoints</a>
+</div>
+
+<h1>Coverage Summary for Class: TechnologyRouterConfig (com.example.technology.infrastructure.entrypoints)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TechnologyRouterConfig</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TechnologyRouterConfig$$SpringCGLIB$$0</td>
+  </tr>
+  <tr>
+    <td class="name">TechnologyRouterConfig$$SpringCGLIB$$FastClass$$0</td>
+  </tr>
+  <tr>
+    <td class="name">TechnologyRouterConfig$$SpringCGLIB$$FastClass$$1</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.technology.infrastructure.entrypoints;
+&nbsp;
+&nbsp;import com.example.technology.application.handler.TechnologyHandlerImpl;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.context.annotation.Bean;
+&nbsp;import org.springframework.context.annotation.Configuration;
+&nbsp;import org.springframework.web.reactive.function.server.RouterFunction;
+&nbsp;import org.springframework.web.reactive.function.server.ServerResponse;
+&nbsp;
+&nbsp;import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+&nbsp;import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+&nbsp;
+<b class="fc">&nbsp;@Slf4j</b>
+&nbsp;@Configuration
+<b class="fc">&nbsp;public class TechnologyRouterConfig {</b>
+&nbsp;    @Bean
+&nbsp;    public RouterFunction&lt;ServerResponse&gt; routerFunction(TechnologyHandlerImpl technologyHandler){
+<b class="fc">&nbsp;        return route(POST(&quot;/technology&quot;), technologyHandler::saveTechnology);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-02-23 20:37</div>
+</div>
+</body>
+</html>

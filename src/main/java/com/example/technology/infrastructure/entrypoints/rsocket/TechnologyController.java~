@@ -1,0 +1,22 @@
+package com.example.technology.infrastructure.entrypoints.rsocket;
+
+import com.example.technology.application.dto.TechnologyResponseDTO;
+import com.example.technology.application.handler.TechnologyHandlerImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+@Controller
+@RequiredArgsConstructor
+public class TechnologyController {
+    private final TechnologyHandlerImpl technologyHandler;
+
+    @MessageMapping("get.technologies")
+    public Mono<List<TechnologyResponseDTO>> getTechnologiesById(List<Long> technologiesIds) {
+        return technologyHandler.getTechnologiesById(technologiesIds).collectList();
+    }
+}
