@@ -1,6 +1,7 @@
 package com.example.technology.application.handler;
 
 import com.example.technology.application.dto.TechnologyDTO;
+import com.example.technology.application.dto.TechnologyResponseDTO;
 import com.example.technology.application.mapper.TechnologyMapper;
 import com.example.technology.domain.api.TechnologyServicePort;
 import com.example.technology.domain.model.Technology;
@@ -13,9 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -66,6 +70,20 @@ class TechnologyHandlerImplTest {
                         .queryParam("sort", "DESC")
                         .build()).exchange()
                 .expectStatus().isOk();
+    }
+
+    @Test
+    void testGetTechnologiesByIdSuccessful() {
+        Technology technology = new Technology(1L, "Java", "Programming Language");
+        TechnologyResponseDTO technologyResponseDTO = new TechnologyResponseDTO(1L, "Java");
+        List<Long> ids = List.of(1L);
+        when(technologyServicePort.findAllById(anyList())).thenReturn(Flux.just(technology));
+        when(technologyMapper.toResponseDTO(any(Technology.class))).thenReturn(technologyResponseDTO);
+
+        StepVerifier.create(technologyHandler.getTechnologiesById(ids)).expectNext(technologyResponseDTO).verifyComplete();
+
+        verify(technologyServicePort, times(1)).findAllById(ids);
+        verify(technologyMapper, times(1)).toResponseDTO(technology);
     }
 
 }
